@@ -1,15 +1,22 @@
-import { GoogleAuthProvider, signInWithPopup, UserCredential } from "firebase/auth";
+import { useEffect } from "react";
+import { GoogleAuthProvider, signInWithPopup, onAuthStateChanged } from "firebase/auth";
 import { auth } from "../firebase.ts";
 import { useNavigate } from "react-router-dom";
 
 const LoginPage = () => {
     const navigate = useNavigate();
+
+    useEffect(() => {
+        const unsubscribe = onAuthStateChanged(auth, (user) => {
+            if (user) navigate("/");
+        });
+        return () => unsubscribe();
+    }, [navigate]);
+
     const handleGoogleLogin = async () => {
         const provider = new GoogleAuthProvider();
         try {
-            const credential: UserCredential = await signInWithPopup(auth, provider);
-            console.log("Googleでログインしました:", credential.user?.displayName);
-            navigate("/welcome");
+            await signInWithPopup(auth, provider);
         } catch (error) {
             console.error("ログイン失敗:", error);
         }
