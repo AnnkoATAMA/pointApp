@@ -1,14 +1,21 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { GoogleAuthProvider, signInWithPopup, onAuthStateChanged } from "firebase/auth";
 import { auth } from "../firebase.ts";
 import { useNavigate } from "react-router-dom";
 
+const ADMIN_EMAIL = import.meta.env.VITE_FIREBASE_ADMIN_EMAIL;
+
 const LoginPage = () => {
     const navigate = useNavigate();
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(auth, (user) => {
-            if (user) navigate("/");
+            if (user) {
+                const isAdmin = ADMIN_EMAIL.includes(user.email || "");
+                navigate(isAdmin ? "/admin" : "/");
+            }
+            setLoading(false);
         });
         return () => unsubscribe();
     }, [navigate]);
@@ -22,9 +29,11 @@ const LoginPage = () => {
         }
     };
 
+    if (loading) return <div>Loading...</div>;
+
     return (
         <div>
-            <h1>Googleログインテスト</h1>
+            <h1>Googleログイン</h1>
             <button onClick={handleGoogleLogin}>Googleでログイン</button>
         </div>
     );

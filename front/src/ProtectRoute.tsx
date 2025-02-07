@@ -5,9 +5,12 @@ import { onAuthStateChanged, User } from "firebase/auth";
 
 interface ProtectedRouteProps {
     children: ReactNode;
+    adminOnly?: boolean;
 }
 
-const ProtectRoute = ({ children }: ProtectedRouteProps) => {
+const ADMIN_EMAIL = import.meta.env.VITE_FIREBASE_ADMIN_EMAIL;
+
+const ProtectRoute = ({ children, adminOnly = false }: ProtectedRouteProps) => {
     const [user, setUser] = useState<User | null>(null);
     const [loading, setLoading] = useState(true);
 
@@ -21,7 +24,12 @@ const ProtectRoute = ({ children }: ProtectedRouteProps) => {
 
     if (loading) return <div>Loading...</div>;
 
-    return user ? <>{children}</> : <Navigate to="/signin" replace />;
+    if (!user) return <Navigate to="/signin" replace />;
+
+    const isAdmin = ADMIN_EMAIL.includes(user.email || "");
+    if (adminOnly && !isAdmin) return <Navigate to="/" replace />;
+
+    return <>{children}</>;
 };
 
 export default ProtectRoute;
