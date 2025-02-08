@@ -12,7 +12,7 @@ const LoginPage = () => {
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(auth, (user) => {
             if (user) {
-                const isAdmin = ADMIN_EMAIL.includes(user.email || "");
+                const isAdmin = ADMIN_EMAIL === user.email;
                 navigate(isAdmin ? "/admin" : "/");
             }
             setLoading(false);

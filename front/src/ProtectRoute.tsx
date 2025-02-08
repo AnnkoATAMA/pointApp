@@ -26,7 +26,7 @@ const ProtectRoute = ({ children, adminOnly = false }: ProtectedRouteProps) => {
 
     if (!user) return <Navigate to="/signin" replace />;
 
-    const isAdmin = ADMIN_EMAIL.includes(user.email || "");
+    const isAdmin = user.email === ADMIN_EMAIL;
     if (adminOnly && !isAdmin) return <Navigate to="/" replace />;
 
     return <>{children}</>;
