@@ -22,7 +22,7 @@ const saveUserToFirestore = async (userId: string, email: string, username: stri
     const userSnap = await getDoc(userRef);
 
     if (!userSnap.exists()) {
-        await setDoc(userRef, { email, username, points: 0 });
+        await setDoc(userRef, { email, username, points: 1000 });
     } else {
         await updateDoc(userRef, { email, username });
     }
