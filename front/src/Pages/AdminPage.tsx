@@ -3,6 +3,10 @@ import { auth } from "../firebase.ts";
 import { getFirestore, collection, getDocs, doc, getDoc, updateDoc } from "firebase/firestore";
 import { signOut } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
+import {
+    Container, Typography, Button, Table, TableBody, TableCell, TableContainer,
+    TableHead, TableRow, Paper, Box
+} from "@mui/material";
 
 const db = getFirestore();
 const ADMIN_EMAIL = import.meta.env.VITE_FIREBASE_ADMIN_EMAIL;
@@ -38,7 +42,6 @@ const AdminPage = () => {
             setIsAdmin(user.email === ADMIN_EMAIL);
 
             if (user.email === ADMIN_EMAIL) {
-
                 const usersCollection = collection(db, "users");
                 const usersSnapshot = await getDocs(usersCollection);
                 const usersData = await Promise.all(
@@ -79,37 +82,72 @@ const AdminPage = () => {
         }
     };
 
-    if (loading) return <div>Loading...</div>;
-    if (!isAdmin) return <div>管理者権限が必要です。</div>;
+    if (loading) return <Container><Typography variant="h6">Loading...</Typography></Container>;
+    if (!isAdmin) return <Container><Typography variant="h6">管理者権限が必要です。</Typography></Container>;
 
     return (
-        <div>
-            <h1>管理者専用ページ</h1>
-            <p>Username : {username}</p>
-            <p>Email : {userEmail}</p>
-            <button onClick={handleLogout}>ログアウト</button>
-            <table>
-                <thead>
-                <tr>
-                    <th>Email</th>
-                    <th>ポイント</th>
-                    <th>操作</th>
-                </tr>
-                </thead>
-                <tbody>
-                {users.map(user => (
-                    <tr key={user.id}>
-                        <td>{user.email}</td>
-                        <td>{user.points}</td>
-                        <td>
-                            <button onClick={() => updatePoints(user.id, user.points + 10)}>+10</button>
-                            <button onClick={() => updatePoints(user.id, user.points - 10)}>-10</button>
-                        </td>
-                    </tr>
-                ))}
-                </tbody>
-            </table>
-        </div>
+        <Container maxWidth="md">
+            <Box my={4} display="flex" justifyContent="space-between" alignItems="center">
+                <Typography variant="h4" fontWeight="bold">管理者専用ページ</Typography>
+                <Button variant="contained" color="error" onClick={handleLogout}>ログアウト</Button>
+            </Box>
+
+            <Typography variant="h6">Username: {username}</Typography>
+            <Typography variant="h6">Email: {userEmail}</Typography>
+
+            <TableContainer component={Paper} sx={{ mt: 3 }}>
+                <Table>
+                    <TableHead>
+                        <TableRow>
+                            <TableCell><strong>Email</strong></TableCell>
+                            <TableCell><strong>ポイント</strong></TableCell>
+                            <TableCell><strong>操作</strong></TableCell>
+                        </TableRow>
+                    </TableHead>
+                    <TableBody>
+                        {users.map(user => (
+                            <TableRow key={user.id}>
+                                <TableCell>{user.email}</TableCell>
+                                <TableCell>{user.points}</TableCell>
+                                <TableCell>
+                                    <Button
+                                        variant="contained"
+                                        color="success"
+                                        onClick={() => updatePoints(user.id, user.points + 100)}
+                                        sx={{ mr: 1 }}
+                                    >
+                                        +100
+                                    </Button>
+                                    <Button
+                                        variant="contained"
+                                        color="success"
+                                        onClick={() => updatePoints(user.id, user.points + 10)}
+                                        sx={{ mr: 1 }}
+                                    >
+                                        +10
+                                    </Button>
+                                    <Button
+                                        variant="contained"
+                                        color="secondary"
+                                        onClick={() => updatePoints(user.id, user.points - 10)}
+                                        sx={{ mr: 1 }}
+                                    >
+                                        -10
+                                    </Button>
+                                    <Button
+                                        variant="contained"
+                                        color="secondary"
+                                        onClick={() => updatePoints(user.id, user.points - 100)}
+                                    >
+                                        -100
+                                    </Button>
+                                </TableCell>
+                            </TableRow>
+                        ))}
+                    </TableBody>
+                </Table>
+            </TableContainer>
+        </Container>
     );
 };
 

@@ -3,6 +3,15 @@ import { auth } from "../firebase.ts";
 import { getFirestore, doc, getDoc, setDoc, updateDoc } from "firebase/firestore";
 import { signOut } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
+import {
+    Container,
+    Typography,
+    Button,
+    Card,
+    CardContent,
+    CircularProgress,
+    Stack,
+} from "@mui/material";
 
 const db = getFirestore();
 
@@ -63,16 +72,37 @@ const PointPage = () => {
         }
     };
 
-    if (loading) return <div>Loading...</div>;
+    if (loading) return (
+        <Container sx={{ display: "flex", justifyContent: "center", mt: 4 }}>
+            <CircularProgress />
+        </Container>
+    );
 
     return (
-        <div>
-            <h1>ポイント管理</h1>
-            <p>Username : {username}</p>
-            <p>Email : {userEmail}</p>
-            <p>現在のポイント: {points !== null ? points : "取得失敗"}</p>
-            <button onClick={handleLogout}>ログアウト</button>
-        </div>
+        <Container component="main" maxWidth="sm" sx={{ mt: 4 }}>
+            <Card sx={{ p: 2, boxShadow: 3 }}>
+                <CardContent>
+                    <Typography variant="h4" gutterBottom>
+                        ポイント管理
+                    </Typography>
+                    <Stack spacing={2}>
+                        <Typography variant="h6">Username: {username}</Typography>
+                        <Typography variant="h6">Email: {userEmail}</Typography>
+                        <Typography variant="h5">
+                            現在のポイント:{" "}
+                            <strong>{points !== null ? points : "取得失敗"}</strong>
+                        </Typography>
+                        <Button
+                            variant="contained"
+                            color="secondary"
+                            onClick={handleLogout}
+                        >
+                            ログアウト
+                        </Button>
+                    </Stack>
+                </CardContent>
+            </Card>
+        </Container>
     );
 };
 
