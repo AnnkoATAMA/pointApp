@@ -1,23 +1,14 @@
 import { useEffect, useState } from "react";
 import { getFirestore, collection, getDocs } from "firebase/firestore";
-import {
-    Container,
-    Typography,
-    Table,
-    TableBody,
-    TableCell,
-    TableContainer,
-    TableHead,
-    TableRow,
-    Paper,
-    CircularProgress,
-} from "@mui/material";
+import { useTheme } from "@mui/material/styles";
+import {Container, Typography, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, CircularProgress, Box} from "@mui/material";
 
 const db = getFirestore();
 
 const RankingPage = () => {
     const [users, setUsers] = useState<{ id: string; username: string; points: number }[]>([]);
     const [loading, setLoading] = useState(true);
+    const theme = useTheme();
 
     useEffect(() => {
         const fetchUsers = async () => {
@@ -45,25 +36,57 @@ const RankingPage = () => {
         );
 
     return (
-        <Container component="main" maxWidth="md" sx={{ mt: 4 }}>
-            <Typography variant="h4" gutterBottom>
-                ランキング
-            </Typography>
-            <TableContainer component={Paper}>
+        <Container component="main" maxWidth="md" sx={{ mt: 4 }} className="fade-in">
+            <Box sx={{
+                textAlign: "center",
+                mb: 3,
+                padding: "10px",
+                borderRadius: "8px",
+                backgroundColor: theme.palette.background.paper,
+                boxShadow: `0 0 15px ${theme.palette.primary.main}`,
+            }}>
+                <Typography variant="h4" color={theme.palette.text.primary}>ランキング</Typography>
+            </Box>
+
+            <TableContainer component={Paper} sx={{
+                animation: "fadeIn 0.6s ease-in-out",
+                backgroundColor: theme.palette.background.paper,
+                boxShadow: `0 0 15px ${theme.palette.primary.main}`,
+            }}>
                 <Table>
                     <TableHead>
                         <TableRow>
-                            <TableCell>順位</TableCell>
-                            <TableCell>ユーザー名</TableCell>
-                            <TableCell>ポイント</TableCell>
+                            <TableCell><strong style={{ color: theme.palette.text.secondary }}>順位</strong></TableCell>
+                            <TableCell><strong style={{ color: theme.palette.text.secondary }}>ユーザー名</strong></TableCell>
+                            <TableCell><strong style={{ color: theme.palette.text.secondary }}>ポイント</strong></TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
                         {users.map((user, index) => (
-                            <TableRow key={user.id}>
-                                <TableCell>{index + 1}</TableCell>
-                                <TableCell>{user.username}</TableCell>
-                                <TableCell>{user.points}</TableCell>
+                            <TableRow key={user.id}
+                                      sx={{
+                                          transition: "all 0.3s ease-in-out",
+                                          ":hover": { backgroundColor: theme.palette.secondary.main + "33" }
+                                      }}
+                            >
+                                <TableCell>
+                                    <Typography
+                                        sx={{
+                                            fontWeight: "bold",
+                                            color: theme.palette.text.primary
+                                        }}
+                                    >
+                                        {index + 1}
+                                    </Typography>
+                                </TableCell>
+                                <TableCell>
+                                    <Typography color={theme.palette.text.primary}>{user.username}</Typography>
+                                </TableCell>
+                                <TableCell>
+                                    <Typography sx={{ fontWeight: "bold", color: theme.palette.text.secondary }}>
+                                        {user.points}
+                                    </Typography>
+                                </TableCell>
                             </TableRow>
                         ))}
                     </TableBody>

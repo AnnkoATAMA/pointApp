@@ -3,15 +3,8 @@ import { auth } from "../firebase.ts";
 import { getFirestore, doc, getDoc, setDoc, updateDoc } from "firebase/firestore";
 import { signOut } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
-import {
-    Container,
-    Typography,
-    Button,
-    Card,
-    CardContent,
-    CircularProgress,
-    Stack,
-} from "@mui/material";
+import { Container, Typography, Button, Card, CardContent, CircularProgress, Stack } from "@mui/material";
+import PointTable from "../components/PointTable.tsx";
 
 const db = getFirestore();
 
@@ -102,6 +95,7 @@ const PointPage = () => {
                     </Stack>
                 </CardContent>
             </Card>
+            <PointTable />
         </Container>
     );
 };

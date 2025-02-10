@@ -3,10 +3,7 @@ import { auth } from "../firebase.ts";
 import { getFirestore, collection, getDocs, doc, getDoc, updateDoc } from "firebase/firestore";
 import { signOut } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
-import {
-    Container, Typography, Button, Table, TableBody, TableCell, TableContainer,
-    TableHead, TableRow, Paper, Box
-} from "@mui/material";
+import {Container, Typography, Button, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Box} from "@mui/material";
 
 const db = getFirestore();
 const ADMIN_EMAIL = import.meta.env.VITE_FIREBASE_ADMIN_EMAIL;

@@ -2,15 +2,7 @@ import { useEffect, useState } from "react";
 import { GoogleAuthProvider, signInWithPopup, onAuthStateChanged } from "firebase/auth";
 import { auth } from "../firebase.ts";
 import { useNavigate } from "react-router-dom";
-import {
-    Container,
-    Typography,
-    Button,
-    Card,
-    CardContent,
-    CircularProgress,
-    Stack,
-} from "@mui/material";
+import {Container, Typography, Button, Card, CardContent, CircularProgress, Stack,} from "@mui/material";
 import GoogleIcon from "@mui/icons-material/Google";
 
 const ADMIN_EMAIL = import.meta.env.VITE_FIREBASE_ADMIN_EMAIL;
