@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useTheme } from "@mui/material/styles";
+import DigitalClock from "./DigitalClock.tsx";
 
 const GREEK_NUMBERS = ["Ⅰ", "Ⅱ", "Ⅲ", "Ⅳ", "Ⅴ", "Ⅵ", "Ⅶ", "Ⅷ", "Ⅸ", "Ⅹ", "Ⅺ", "Ⅻ"];
 const PAGE_LINKS = ["/home", "/ranking", "/", "/", "/", "/", "/", "/", "/", "/", "/", "/"];
@@ -80,6 +81,7 @@ const Clock: React.FC = () => {
                     {dayNightIcon}
                 </text>
             </svg>
+            <DigitalClock />
         </div>
     );
 };
