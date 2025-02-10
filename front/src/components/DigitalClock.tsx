@@ -29,7 +29,6 @@ const SevenSegment: React.FC<SevenSegmentProps> = ({ digit }) => {
             <polygon points=" 8, 38  4, 42  4, 58  8, 62 12, 58 12, 42" fill={segments[4] ? "red" : "#444"}/>
             <polygon points=" 8, 10  4, 14  4, 30  8, 34 12, 30 12, 14" fill={segments[5] ? "red" : "#444"}/>
             <polygon points="10, 36 14, 40 30, 40 34, 36 30, 32 14, 32" fill={segments[6] ? "red" : "#444"}/>
-
         </svg>
     );
 };
