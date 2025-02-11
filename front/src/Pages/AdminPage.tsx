@@ -110,6 +110,14 @@ const AdminPage = () => {
                                     <Button
                                         variant="contained"
                                         color="success"
+                                        onClick={() => updatePoints(user.id, user.points + 1000)}
+                                        sx={{ mr: 1 }}
+                                    >
+                                        +1000
+                                    </Button>
+                                    <Button
+                                        variant="contained"
+                                        color="success"
                                         onClick={() => updatePoints(user.id, user.points + 100)}
                                         sx={{ mr: 1 }}
                                     >
@@ -135,8 +143,16 @@ const AdminPage = () => {
                                         variant="contained"
                                         color="secondary"
                                         onClick={() => updatePoints(user.id, user.points - 100)}
+                                        sx={{ mr: 1 }}
                                     >
                                         -100
+                                    </Button>
+                                    <Button
+                                        variant="contained"
+                                        color="secondary"
+                                        onClick={() => updatePoints(user.id, user.points - 1000)}
+                                    >
+                                        -1000
                                     </Button>
                                 </TableCell>
                             </TableRow>
