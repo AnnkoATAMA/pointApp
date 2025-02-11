@@ -2,6 +2,7 @@ import { ReactNode, useEffect, useState } from "react";
 import { Navigate } from "react-router-dom";
 import { auth } from "./firebase.ts";
 import { onAuthStateChanged, User } from "firebase/auth";
+import {CircularProgress, Container} from "@mui/material";
 
 interface ProtectedRouteProps {
     children: ReactNode;
@@ -22,7 +23,12 @@ const ProtectRoute = ({ children, adminOnly = false }: ProtectedRouteProps) => {
         return () => unsubscribe();
     }, []);
 
-    if (loading) return <div>Loading...</div>;
+    if (loading)
+        return (
+            <Container sx={{ display: "flex", justifyContent: "center", mt: 4 }}>
+                <CircularProgress />
+            </Container>
+        );
 
     if (!user) return <Navigate to="/signin" replace />;
 

@@ -3,7 +3,21 @@ import { auth } from "../firebase.ts";
 import { getFirestore, collection, getDocs, doc, getDoc, updateDoc } from "firebase/firestore";
 import { signOut } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
-import {Container, Typography, Button, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Box} from "@mui/material";
+import {
+    Container,
+    Typography,
+    Button,
+    Table,
+    TableBody,
+    TableCell,
+    TableContainer,
+    TableHead,
+    TableRow,
+    Paper,
+    Box,
+    TextField,
+    CircularProgress
+} from "@mui/material";
 
 const db = getFirestore();
 const ADMIN_EMAIL = import.meta.env.VITE_FIREBASE_ADMIN_EMAIL;
@@ -25,6 +39,7 @@ const AdminPage = () => {
     const [userEmail, setUserEmail] = useState<string | null>(null);
     const [isAdmin, setIsAdmin] = useState(false);
     const navigate = useNavigate();
+    const [customPoints, setCustomPoints] = useState<number | null>(null);
 
     useEffect(() => {
         const fetchUsers = async () => {
@@ -79,7 +94,12 @@ const AdminPage = () => {
         }
     };
 
-    if (loading) return <Container><Typography variant="h6">Loading...</Typography></Container>;
+    if (loading)
+        return (
+            <Container sx={{ display: "flex", justifyContent: "center", mt: 4 }}>
+                <CircularProgress />
+            </Container>
+        );
     if (!isAdmin) return <Container><Typography variant="h6">管理者権限が必要です。</Typography></Container>;
 
     return (
@@ -107,14 +127,6 @@ const AdminPage = () => {
                                 <TableCell>{user.email}</TableCell>
                                 <TableCell>{user.points}</TableCell>
                                 <TableCell>
-                                    <Button
-                                        variant="contained"
-                                        color="success"
-                                        onClick={() => updatePoints(user.id, user.points + 1000)}
-                                        sx={{ mr: 1 }}
-                                    >
-                                        +1000
-                                    </Button>
                                     <Button
                                         variant="contained"
                                         color="success"
@@ -147,13 +159,26 @@ const AdminPage = () => {
                                     >
                                         -100
                                     </Button>
+                                    <TextField
+                                        type="number"
+                                        label="カスタムポイント"
+                                        variant="outlined"
+                                        size="small"
+                                        onChange={(e) => setCustomPoints(Number(e.target.value) || 0)}
+                                        sx={{ width:100, mr: 1 }}
+                                    />
                                     <Button
                                         variant="contained"
-                                        color="secondary"
-                                        onClick={() => updatePoints(user.id, user.points - 1000)}
+                                        color="primary"
+                                        onClick={async () => {
+                                            if (customPoints !== null) {
+                                                await updatePoints(user.id, user.points + customPoints);
+                                            }
+                                        }}
                                     >
-                                        -1000
+                                        追加
                                     </Button>
+
                                 </TableCell>
                             </TableRow>
                         ))}
